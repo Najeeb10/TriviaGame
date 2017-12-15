@@ -75,18 +75,40 @@ function displayQuestion() {
 
     var multipleChoice = "";
     sec = 10;
+     // Append all questions along with its choices
+   // quiz = "<span class='question'>" + quizList[count].question + "</span>" + multipleChoice;
+    var questions = $("<div>");
+    questions.attr("class","question");
+    questions.text(quizList[count].question);
+
 
 
     //Get mutiple choice for each question, set it's values according to the choices and set same name for each question to group them together.
     for (var j = 0; j < quizList[count].choices.length; j++) {
-        multipleChoice += "<br><input name=" + quizList[count].name + " type='radio' value=" + quizList[count].choices[j] + ">&emsp;" + quizList[count].choices[j];
-    }
+        // multipleChoice += "<br><input name=" + quizList[count].name + " type='radio' data-val=" + quizList[count].choices[j] + ">&emsp;" + quizList[count].choices[j];
+    // }
+          multipleChoice = $("<input>");
+          multipleChoice.attr("data-val", quizList[count].choices[j]);
+          multipleChoice.attr("name", quizList[count].name);
+          multipleChoice.attr("type", 'radio');
+          // multipleChoice.text(quizList[count].choices[j]);
+        
+          questions.append(multipleChoice);
+          questions.append($("<span>").text(quizList[count].choices[j]));
+          questions.append($("<br>"));
+}
+
+
+
+          
 
     // Append all questions along with its choices
-    quiz = "<span class='question'>" + quizList[count].question + "</span>" + multipleChoice;
+    // quiz = "<span class='question'>" + quizList[count].question + "</span>" + multipleChoice;
 
     // Append all question and its choices in the form and display it on screen
-    $(".quiz-form").html(quiz);
+    // $(".quiz-form").html(quiz);
+    $(".quiz-form").empty()
+    $(".quiz-form").append(questions);
 
     $('.form').show();
     $(".time-left").show();
@@ -102,7 +124,7 @@ function checkResult() {
     $(".time-left").hide();
 
     // Get the value of checked button and compare it with answer of the question. Update the counters accordingly.
-    val = $("input[name='" + quizList[count].name + "']:checked").attr("value");
+    val = $("input[name='" + quizList[count].name + "']:checked").attr("data-val");
     ans = quizList[count].answer;
 
     if (val === ans) {
